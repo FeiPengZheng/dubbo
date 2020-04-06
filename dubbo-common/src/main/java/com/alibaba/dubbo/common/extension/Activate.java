@@ -39,6 +39,11 @@ import java.lang.annotation.Target;
  * @see URL
  * @see ExtensionLoader
  */
+
+/**
+ * 对于可以被框架中自动激活加载扩展，@Activate 用于配置扩展被自动激活加载条件。
+ * 比如，Filter 扩展，有多个实现，使用 @Activate 的扩展可以根据条件被自动加载。
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
@@ -49,6 +54,11 @@ public @interface Activate {
      *
      * @return group names to match
      * @see ExtensionLoader#getActivateExtension(URL, String, String)
+     */
+    /**
+     * Group过滤条件
+     * 包含{@link ExtensionLoader#getActivateExtension(URL, String)}的group参数给的值，则返回扩展
+     * 如果没有Group设置，则不过滤
      */
     String[] group() default {};
 
@@ -63,12 +73,23 @@ public @interface Activate {
      * @see ExtensionLoader#getActivateExtension(URL, String)
      * @see ExtensionLoader#getActivateExtension(URL, String, String)
      */
+    /**
+     * Key过滤条件。包含{@link ExtensionLoader#getActivateExtension(URL, String)}的URL的参数中的key中有，则返回拓展
+     * 示例：<br/>
+     * 注解的值 <code>@Activate("cache,validatioin")</code>，
+     * 则{@link ExtensionLoader#getActivateExtension}的URL的参数有<code>cache</code>Key，或是<code>validatioin</code>则返回扩展。
+     * <br/>
+     * 如没有设置，则不过滤。
+     */
     String[] value() default {};
 
     /**
      * Relative ordering info, optional
      *
      * @return extension list which should be put before the current one
+     */
+    /**
+     * 排序信息，可以不提供
      */
     String[] before() default {};
 
@@ -77,12 +98,18 @@ public @interface Activate {
      *
      * @return extension list which should be put after the current one
      */
+    /**
+     * 排序信息，可以不提供
+     */
     String[] after() default {};
 
     /**
      * Absolute ordering info, optional
      *
      * @return absolute ordering info
+     */
+    /**
+     * 排序信息，可以不提供。
      */
     int order() default 0;
 }

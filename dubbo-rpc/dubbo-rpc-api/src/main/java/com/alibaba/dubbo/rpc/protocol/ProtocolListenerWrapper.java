@@ -32,6 +32,8 @@ import java.util.Collections;
 
 /**
  * ListenerProtocol
+ * 实现 Protocol 接口，Protocol 的 Wrapper 拓展实现类，
+ *  用于给 Exporter 增加 ExporterListener ，监听 Exporter 暴露完成和取消暴露完成。
  */
 public class ProtocolListenerWrapper implements Protocol {
 

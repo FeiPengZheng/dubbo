@@ -134,6 +134,7 @@ public class UrlUtils {
         }
         List<URL> registries = new ArrayList<URL>();
         for (String addr : addresses) {
+            //若 addr 认为是url，url中有不存在的属性时，从defaultURL中获取对应的属性，设置到url中
             registries.add(parseURL(addr, defaults));
         }
         return registries;

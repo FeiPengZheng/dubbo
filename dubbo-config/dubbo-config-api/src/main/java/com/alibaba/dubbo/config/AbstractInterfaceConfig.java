@@ -162,6 +162,8 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
      * 加载注册中心 URL 数组
      * @param provider 是否提供服务提供者
      * @return URL 数组
+     * address 可以使用 "|" 或者 ";" 作为分隔符，设置多个注册中心分组。
+     * 注意，一个注册中心集群是一个分组，而不是多个
      */
     protected List<URL> loadRegistries(boolean provider) {
         //校验 注册中心 registerConfig 配置数组
@@ -202,7 +204,9 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
                     //解析地址 创建 Dubbo URL数组。
                     List<URL> urls = UrlUtils.parseURLs(address, map);
                     for (URL url : urls) {
+                        //设置register = zookeeper
                         url = url.addParameter(Constants.REGISTRY_KEY, url.getProtocol());
+                        //设置 protocol = register 到URL
                         url = url.setProtocol(Constants.REGISTRY_PROTOCOL);
                         //添加到结果
                         if ((provider && url.getParameter(Constants.REGISTER_KEY, true))

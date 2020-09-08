@@ -202,7 +202,7 @@ public class ExtensionLoader<T> {
                     ") is not extension, because WITHOUT @" + SPI.class.getSimpleName() + " Annotation!");
         }
         /**
-         * 从EXTENSION_LOADERS拓展接口中获取Extension对象，如果不存在则创建并添加
+         * 从EXTENSION_LOADERS拓展接口(缓存)中获取Extension对象，如果不存在则创建并添加
          */
         ExtensionLoader<T> loader = (ExtensionLoader<T>) EXTENSION_LOADERS.get(type);
         if (loader == null) {

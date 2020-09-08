@@ -1,0 +1,3 @@
+#dubbo=com.alibaba.dubbo.examples.zpf.DubboAdaptiveExt2
+#cloud=com.alibaba.dubbo.examples.zpf.SpringCloudAdaptiveExt2
+thrift=com.alibaba.dubbo.examples.zpf.ThriftAdaptiveExt2

@@ -90,6 +90,7 @@ public abstract class AbstractRegistry implements Registry {
             }
         }
         this.file = file;
+        //缓存文件
         loadProperties();
         notify(url.getBackupUrls());
     }
@@ -155,7 +156,7 @@ public abstract class AbstractRegistry implements Registry {
             RandomAccessFile raf = new RandomAccessFile(lockfile, "rw");
             try {
                 FileChannel channel = raf.getChannel();
-                try {
+                try {//操作文件时，加锁
                     FileLock lock = channel.tryLock();
                     if (lock == null) {
                         throw new IOException("Can not lock the registry cache file " + file.getAbsolutePath() + ", ignore and retry later, maybe multi java process use the file, please config: dubbo.registry.file=xxx.properties");
@@ -410,7 +411,7 @@ public abstract class AbstractRegistry implements Registry {
             String category = entry.getKey();
             List<URL> categoryList = entry.getValue();
             categoryNotified.put(category, categoryList);
-            saveProperties(url);
+            saveProperties(url);//更新本地缓存文件
             listener.notify(categoryList);
         }
     }
@@ -437,7 +438,7 @@ public abstract class AbstractRegistry implements Registry {
             long version = lastCacheChanged.incrementAndGet();
             if (syncSaveFile) {
                 doSaveProperties(version);
-            } else {
+            } else {//利用线程池来处理
                 registryCacheExecutor.execute(new SaveProperties(version));
             }
         } catch (Throwable t) {

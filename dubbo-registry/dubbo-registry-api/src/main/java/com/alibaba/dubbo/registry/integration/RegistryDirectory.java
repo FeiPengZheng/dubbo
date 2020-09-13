@@ -192,6 +192,9 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
         }
     }
 
+    /**
+     * 注册中心的回调，根据注册中心动态的更新
+     */
     @Override
     public synchronized void notify(List<URL> urls) {
         List<URL> invokerUrls = new ArrayList<URL>();
@@ -241,6 +244,11 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
      * 2.If the incoming invoker list is not empty, it means that it is the latest invoker list
      * 3.If the list of incoming invokerUrl is empty, It means that the rule is only a override rule or a route rule, which needs to be re-contrasted to decide whether to re-reference.
      *
+     * 1.如果已将URL转换为invoker，则将不再重新引用它并直接从缓存中获取它，并且请注意，URL中的任何参数更改都将被重新引用。
+     * 2.如果传入的invoker列表不为空，则表示最新的invoker列表
+     * 3.如果传入的invokerUrl的列表为空，则意味着该规则只是覆盖规则或路由规则，需要重新进行对比以决定是否重新引用。
+     *
+     *
      * @param invokerUrls this parameter can't be null
      */
     // TODO: 2017/8/31 FIXME The thread pool should be used to refresh the address, otherwise the task may be accumulated.
@@ -262,6 +270,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
             if (invokerUrls.isEmpty()) {
                 return;
             }
+            //
             Map<String, Invoker<T>> newUrlInvokerMap = toInvokers(invokerUrls);// Translate url list to Invoker map
             Map<String, List<Invoker<T>>> newMethodInvokerMap = toMethodInvokers(newUrlInvokerMap); // Change method name to map Invoker Map
             // state change

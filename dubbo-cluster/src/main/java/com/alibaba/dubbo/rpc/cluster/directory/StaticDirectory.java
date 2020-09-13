@@ -44,6 +44,7 @@ public class StaticDirectory<T> extends AbstractDirectory<T> {
         this(url, invokers, null);
     }
 
+    //这个其实是不会动态变化的,用的比较少，主要用于服务对多注册中心的引用？这里不懂
     public StaticDirectory(URL url, List<Invoker<T>> invokers, List<Router> routers) {
         super(url == null && invokers != null && !invokers.isEmpty() ? invokers.get(0).getUrl() : url, routers);
         if (invokers == null || invokers.isEmpty())

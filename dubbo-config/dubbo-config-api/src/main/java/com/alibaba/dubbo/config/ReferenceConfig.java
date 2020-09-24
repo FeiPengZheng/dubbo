@@ -58,6 +58,12 @@ import static com.alibaba.dubbo.common.utils.NetUtils.isInvalidLocalHost;
 /**
  * ReferenceConfig
  *
+ *
+ * 服务引用无非就是做了两件事
+ *
+ * 将spring的schemas标签信息转换bean,然后通过这个bean的信息,连接、订阅zookeeper节点信息创建一个invoker
+ *
+ * 将invoker的信息创建一个动态代理对象
  * @export
  */
 public class ReferenceConfig<T> extends AbstractReferenceConfig {
@@ -332,6 +338,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
 
         //attributes are stored by system context.
         StaticContext.getSystemContext().putAll(attributes);
+        //调用
         ref = createProxy(map);
         ConsumerModel consumerModel = new ConsumerModel(getUniqueServiceName(), this, ref, interfaceClass.getMethods());
         ApplicationModel.initConsumerModel(getUniqueServiceName(), consumerModel);

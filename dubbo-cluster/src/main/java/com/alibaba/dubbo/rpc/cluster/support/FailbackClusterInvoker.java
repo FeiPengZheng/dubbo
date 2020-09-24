@@ -73,10 +73,10 @@ public class FailbackClusterInvoker<T> extends AbstractClusterInvoker<T> {
 
                         @Override
                         public void run() {
-                            // collect retry statistics
+                            // collect retry statistics  收集统计信息
                             try {
                                 retryFailed();
-                            } catch (Throwable t) { // Defensive fault tolerance
+                            } catch (Throwable t) { // Defensive fault tolerance      防御性容错
                                 logger.error("Unexpected error occur at collect statistic", t);
                             }
                         }

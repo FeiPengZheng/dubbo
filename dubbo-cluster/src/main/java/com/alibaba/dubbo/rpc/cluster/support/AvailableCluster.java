@@ -34,6 +34,9 @@ public class AvailableCluster implements Cluster {
 
     public static final String NAME = "available";
 
+    /**
+     * 源码的这个写法是比较优雅的,遍历所有的Invokers判断invoker.isAvalible,只要一个有为true直接调用返回，否则就抛出异常.
+     */
     @Override
     public <T> Invoker<T> join(Directory<T> directory) throws RpcException {
 
